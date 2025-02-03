@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./style.css" />
+    <title>Satirical News</title>
+  </head>
+  <body>
+    <div id="app">
+      <div class = "container">
+        <h1>Satirical News Article Generator</h1>
+        <p>Select a category below and generate a news article</p>
+        <div class="dropdown">
+          <button class="dropbtn" id="dropdown-button">Select Category</button>
+          <div class="dropdown-content">
+            <div class="options" >
+              <div class="category" id="general">
+                <label for="general">General</label>
+                <input type="radio" id="general-radio" name="category" value="general" checked>
+              </div>
+              <div class="category" id="sports">
+                <label for="sports">Sports</label>
+                <input type="radio" id="sports-radio" name="category" value="sports">
+              </div>
+              <div class="category" id="entertainment">
+                <label for="entertainment">Entertainment</label>
+                <input type="radio" id="entertainment-radio" name="category" value="entertainment">
+              </div>
+              <div class="category" id="technology">
+                <label for="technology">Technology</label>
+                <input type="radio" id="technology-radio" name="category" value="technology">
+              </div>
+              <div class="category" id="business">
+                <label for="business">Business</label>
+                <input type="radio" id="business-radio" name="category" value="business">
+              </div>
+              <div class="category" id="health">
+                <label for="health">Health</label>
+                <input type="radio" id="health-radio" name="category" value="health">
+              </div>
+              <div class="category" id="science">
+                <label for="science">Science</label>
+                <input type="radio" id="science-radio" name="category" value="science">
+              </div>
+            </div>
+            <div class="submit">
+              <button id="generate-button">Generate Article</button>
+            </div>
+          </div>
+      </div>
+      <div class="article">
+        <h2 id="article-title"></h2>
+        <img id="article-img" src="">
+        <div class="article-body">
+          <p id="article-content"></p>
+        </div>
+        <div class="download">
+          <p id="weblink"></p>
+          <button id="download-button">Download Article</button>
+        </div>
+      </div>
+    </div>
+    <script type="module" src="./main.js"></script>
+  </body>
+</html>

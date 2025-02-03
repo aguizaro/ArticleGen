@@ -49,6 +49,3 @@ dist-ssr
 *.sw?
 
 .editorconfig
-
-package-lock.json
-package.json

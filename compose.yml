@@ -65,6 +65,8 @@ services:
       - mongodb_data:/data/db
     networks:
       - internal
+    labels:
+      - "traefik.enable=false"
     ports:
       - "27017:27017"
 

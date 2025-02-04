@@ -13,9 +13,9 @@ const articleElement = document.querySelector(".article");
 const downloadDiv = document.querySelector(".download");
 const weblink = document.getElementById("weblink");
 const downloadButton = document.getElementById("download-button");
-const backkend_url = process.env.BACKEND_URL;
-const articleEndpoint = `${backkend_url}/article?category=`;
-const generatedEndpoint = `${backkend_url}/generated?seed=`;
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
+const articleEndpoint = `${backendUrl}/article?category=`;
+const generatedEndpoint = `${backendUrl}/generated?seed=`;
 
 // functions -------------------------------------------------------------
 

@@ -15,7 +15,7 @@ services:
     ports:
       - "80:80"
       - "443:443"
-      - "8080:8080"  # Traefik dashboard
+      - "8080:8080" # Traefik dashboard
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
       - "./letsencrypt:/letsencrypt"
@@ -30,16 +30,13 @@ services:
       - PORT=${PORT}
       - MONGO_URI=${MONGO_URI}
       - OPENAI_API_KEY=${OPENAI_API_KEY}
-      - NEWS_API_KEY=${NEWS_API_KEY} 
+      - NEWS_API_KEY=${NEWS_API_KEY}
     labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.backend.rule=Host(`api.${DOMAIN_NAME}`)"
-      - "traefik.http.routers.backend.entrypoints=websecure"
-      - "traefik.http.services.backend.loadbalancer.server.port=${PORT}"
+      - "traefik.enable=false" # do not expose publicly
     depends_on:
       - mongodb
     networks:
-      - internal 
+      - internal
 
   frontend:
     build:
@@ -49,7 +46,7 @@ services:
     container_name: frontend
     restart: always
     environment:
-      - VITE_BACKEND_URL=http://backend:${PORT} 
+      - VITE_BACKEND_URL=http://backend:${PORT}
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.frontend.rule=Host(`${DOMAIN_NAME}`, `www.${DOMAIN_NAME}`)"
@@ -58,7 +55,7 @@ services:
       - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
     networks:
       - web
-      - internal  
+      - internal
 
   mongodb:
     image: mongo:latest

@@ -42,7 +42,10 @@ services:
       - internal 
 
   frontend:
-    build: ./frontend
+    build:
+      context: ./frontend
+      args:
+        VITE_BACKEND_URL: http://backend:${PORT}
     container_name: frontend
     restart: always
     environment:

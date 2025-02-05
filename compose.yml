@@ -50,7 +50,8 @@ services:
   frontend:
     build:
       context: ./frontend
-      args: VITE_BACKEND_URL=https://api.${DOMAIN_NAME}
+      args:
+        - VITE_BACKEND_URL=https://api.${DOMAIN_NAME}
     container_name: frontend
     restart: always
     environment:

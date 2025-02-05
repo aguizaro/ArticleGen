@@ -1,9 +1,12 @@
+version: "3.8"
+
 services:
   traefik:
     image: traefik:v2.10
     container_name: traefik
     restart: always
     command:
+      - "--log.level=DEBUG"
       - "--providers.docker=true"
       - "--entrypoints.web.address=:80"
       - "--entrypoints.websecure.address=:443"
@@ -21,13 +24,14 @@ services:
       - "./letsencrypt:/letsencrypt"
     networks:
       - web
+      - internal
 
   backend:
     build: ./backend
     container_name: backend
     restart: always
     environment:
-      - PORT=${PORT}
+      - PORT=3000 # Directly set port instead of ${PORT} in case .env isn't loaded
       - MONGO_URI=${MONGO_URI}
       - OPENAI_API_KEY=${OPENAI_API_KEY}
       - NEWS_API_KEY=${NEWS_API_KEY}
@@ -36,6 +40,7 @@ services:
       - "traefik.http.routers.backend.rule=Host(`api.${DOMAIN_NAME}`)"
       - "traefik.http.routers.backend.entrypoints=websecure"
       - "traefik.http.routers.backend.tls.certresolver=myresolver"
+      - "traefik.http.services.backend.loadbalancer.server.port=3000"
     depends_on:
       - mongodb
     networks:
@@ -45,12 +50,11 @@ services:
   frontend:
     build:
       context: ./frontend
-      args:
-        VITE_BACKEND_URL: https://api.${DOMAIN_NAME}
+      args: VITE_BACKEND_URL=https://api.${DOMAIN_NAME}
     container_name: frontend
     restart: always
     environment:
-      - VITE_BACKEND_URL=https://api.${DOMAIN_NAME} 
+      - VITE_BACKEND_URL=https://api.${DOMAIN_NAME}
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.frontend.rule=Host(`${DOMAIN_NAME}`, `www.${DOMAIN_NAME}`)"
@@ -67,15 +71,13 @@ services:
     volumes:
       - mongodb_data:/data/db
     networks:
-      - internal
-    labels:
-      - "traefik.enable=false"
+      - internal # Added network for MongoDB
 
 volumes:
   mongodb_data:
 
 networks:
   web:
-    external: true
+    external: true # Ensure you created it manually using `docker network create web`
   internal:
-    internal: true
+    internal: true # Private network for backend & DB

@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   traefik:
     image: traefik:v2.10
@@ -18,7 +16,6 @@ services:
     ports:
       - "80:80"
       - "443:443"
-      - "8080:8080" # Traefik dashboard
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
       - "./letsencrypt:/letsencrypt"
@@ -31,7 +28,7 @@ services:
     container_name: backend
     restart: always
     environment:
-      - PORT=3000 # Directly set port instead of ${PORT} in case .env isn't loaded
+      - PORT=3000 
       - MONGO_URI=${MONGO_URI}
       - OPENAI_API_KEY=${OPENAI_API_KEY}
       - NEWS_API_KEY=${NEWS_API_KEY}

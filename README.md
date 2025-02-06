@@ -26,7 +26,7 @@ Check it out here → [LetsGenerateArticles.com](http://letsgeneratearticles.com
 1. Clone the repository:
 
    ```sh
-   git clone https://github.com/yourusername/ArticleGen.git
+   git clone https://github.com/aguizaro/ArticleGen.git
    cd ArticleGen
    ```
 
@@ -37,7 +37,7 @@ Check it out here → [LetsGenerateArticles.com](http://letsgeneratearticles.com
    MONGO_INITDB_ROOT_PASSWORD=password
    MONGO_DB_PORT=port
    MONGO_URI=mongodb://username:password@mongo:port
-   PORT=backendport
+
    OPENAI_API_KEY=key
    NEWS_API_KEY=key
 

@@ -96,6 +96,7 @@ app.get("/article", async (req, res) => {
         const index = Math.floor(Math.random() * response.length);
         const data = response[index]; // random article from db in category
         const articleDate = new Date(data.publishedAt).toLocaleDateString("en-US", {
+            weekday: "long",
             month: "long",
             day: "numeric",
             year: "numeric",

@@ -95,11 +95,17 @@ app.get("/article", async (req, res) => {
         console.log(`Found ${response.length} articles with category: ${category}`);
         const index = Math.floor(Math.random() * response.length);
         const data = response[index]; // random article from db in category
+        const articleDate = new Date(data.publishedAt).toLocaleDateString("en-US", {
+            month: "long",
+            day: "numeric",
+            year: "numeric",
+        });
         console.log(`Using article ${index}`);
 
         const article = await generateArticle(data);
         const articleData = JSON.parse(article.message.content);
         articleData.urlToImage = await urlToBase64(data.urlToImage);
+        articleData.publishedAt = articleDate;
 
         const seed = generateSeed();
         articleData.seed = seed;

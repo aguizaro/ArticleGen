@@ -8,6 +8,7 @@ const generateButton = document.getElementById("generate-button");
 const radioButtons = document.querySelectorAll('input[type="radio"]');
 const articleTitle = document.getElementById("article-title");
 const articleImg = document.getElementById("article-img");
+const articleDate = document.getElementById("article-date");
 const articleContent = document.getElementById("article-content");
 const articleElement = document.querySelector(".article");
 const downloadDiv = document.querySelector(".download");
@@ -116,6 +117,7 @@ const populateArticle = (data) => {
     articleElement.classList.add("is-active");
     articleTitle.textContent = data.response.title;
     articleImg.src = `data:image/jpeg;base64,${data.response.urlToImage}`;
+    articleDate.textContent = data.response.publishedAt;
     articleContent.textContent = data.response.content;
     const generatedLink =
         window.location.origin +

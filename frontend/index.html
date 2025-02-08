@@ -2,16 +2,18 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <link rel="stylesheet" href="./style.css" />
     <title>Satirical News</title>
   </head>
   <body>
     <div id="app">
       <div class = "container">
-        <h1 id="title">ArticleGen</h1>
-        <h2 id= "subtitle"> Satirical News Article Generator</h2>
-        <p>Select a category below and generate a news article</p>
+        <div class= "header">
+          <h1 id="title">ArticleGen</h1>
+          <h2 id="subtitle"> Satirical News Article Generator</h2>
+        </div>
+        <p id="prompt">Select a category below to generate a news article</p>
         <div class="dropdown">
           <button class="dropbtn" id="dropdown-button">Select Category</button>
           <div class="dropdown-content">

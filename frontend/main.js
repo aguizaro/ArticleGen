@@ -1,9 +1,9 @@
 import html2canvas from "html2canvas";
 
 // find elements -------------------------------------------------------------
-const app = document.getElementById("app");
 const dropdown = document.getElementById("dropdown-button");
 const dropdownMenu = document.querySelector(".dropdown-content");
+const dropdownButton = document.getElementById("dropdown-button");
 const generateButton = document.getElementById("generate-button");
 const radioButtons = document.querySelectorAll('input[type="radio"]');
 const articleTitle = document.getElementById("article-title");
@@ -11,7 +11,9 @@ const articleImg = document.getElementById("article-img");
 const articleDate = document.getElementById("article-date");
 const articleContent = document.getElementById("article-content");
 const articleElement = document.querySelector(".article");
-const downloadDiv = document.querySelector(".download");
+const title = document.getElementById("title");
+const subtitle = document.getElementById("subtitle");
+const prompt = document.getElementById("prompt");
 const weblink = document.getElementById("weblink");
 const downloadButton = document.getElementById("download-button");
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
@@ -112,9 +114,14 @@ const checkForSeed = async () => {
     }
 };
 
+
 // populate the article with given json data
 const populateArticle = (data) => {
     articleElement.classList.add("is-active");
+    title.classList.add("is-active");
+    subtitle.classList.add("is-active");
+    prompt.classList.add("is-active");
+    dropdownButton.textContent = "Select Another Category";
     articleTitle.textContent = data.response.title;
     articleImg.src = `data:image/jpeg;base64,${data.response.urlToImage}`;
     articleDate.textContent = data.response.publishedAt;

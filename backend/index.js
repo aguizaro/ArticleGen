@@ -14,7 +14,6 @@ const mongoClient = new MongoClient(process.env.MONGO_URI, {
 
 // image processing -----------------------------------------------------
 const axios = require("axios");
-const fs = require("fs");
 
 // convert image URL to base64 encoding
 async function urlToBase64(imageUrl) {

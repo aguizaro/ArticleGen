@@ -70,7 +70,7 @@ app.listen(port, "0.0.0.0", () => {
 // routes -----------------------------------------------------
 app.get("/article", async (req, res) => {
     try {
-        mongoClient.connect();
+        await mongoClient.connect();
 
         const { category } = req.query;
         if (!category) throw new Error("Category is required");
@@ -86,7 +86,11 @@ app.get("/article", async (req, res) => {
             throw new Error("Invalid category");
 
         const articles = mongoClient.db("admin").collection("articles");
-        const response = await articles.find({ category: category }).toArray();
+        const response = await articles
+            .find({ category: category })
+            .sort({ publishedAt: -1 })
+            .limit(300)
+            .toArray();
 
         if (response.length === 0)
             throw new Error(`No articles found with category ${category}`);
@@ -119,12 +123,14 @@ app.get("/article", async (req, res) => {
         res.status(200).json({ response: articleData });
     } catch (error) {
         res.status(400).json({ message: error.message });
+    } finally {
+        await mongoClient.close();
     }
 });
 
 app.get("/generated", async (req, res) => {
     try {
-        mongoClient.connect();
+        await mongoClient.connect();
 
         const { seed } = req.query;
         if (!seed) throw new Error("Seed is required");
@@ -137,5 +143,50 @@ app.get("/generated", async (req, res) => {
         res.status(200).json({ response: response });
     } catch (error) {
         res.status(400).json({ message: error.message });
+    } finally {
+        await mongoClient.close();
+    }
+});
+
+app.get("/gallery", async (req, res) => {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+
+    const skip = (page - 1) * limit;
+
+    try {
+        await mongoClient.connect();
+
+        const articles = await mongoClient
+            .db("admin")
+            .collection("seeds")
+            .find({ publishedAt: { $exists: true } })
+            .sort({ publishedAt: -1 })
+            .skip(skip)
+            .limit(limit)
+            .toArray();
+
+        if (articles.length === 0) throw new Error("No articles found");
+
+        const totalArticles = await mongoClient
+            .db("admin")
+            .collection("seeds")
+            .countDocuments({ publishedAt: { $exists: true } });
+
+        if (totalArticles === 0) throw new Error("something fucked up");
+
+        res.json({
+            articles,
+            pagination: {
+                currentPage: page,
+                totalPages: Math.ceil(totalArticles / limit),
+                totalArticles,
+            },
+        });
+    } catch (error) {
+        console.error("Error fetching articles:", error);
+        res.status(500).json({ message: "Error fetching articles" });
+    } finally {
+        await mongoClient.close();
     }
 });

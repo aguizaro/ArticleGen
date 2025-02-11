@@ -94,11 +94,14 @@ app.get("/article", async (req, res) => {
         console.log(`Found ${response.length} articles with category: ${category}`);
         const index = Math.floor(Math.random() * response.length);
         const data = response[index]; // random article from db in category
-        const articleDate = new Date(data.publishedAt).toLocaleDateString("en-US", {
+        const articleDate = new Date(data.publishedAt).toLocaleString("en-US", {
             weekday: "long",
             month: "long",
             day: "numeric",
             year: "numeric",
+            hour: "numeric",
+            minute: "numeric",
+            hour12: true, // Ensures AM/PM format
         });
         console.log(`Using article ${index}`);
 

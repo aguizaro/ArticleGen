@@ -151,7 +151,7 @@ const insertData = async (articles, category) => {
                     description: article.description,
                     url: article.url,
                     urlToImage: article.urlToImage,
-                    publishedAt: article.publishedAt,
+                    publishedAt: new Date(article.publishedAt),
                     content: article.content,
                 },
             ]);

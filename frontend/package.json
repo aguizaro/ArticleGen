@@ -12,6 +12,17 @@
     "vite": "^5.2.0"
   },
   "dependencies": {
-    "html2canvas": "^1.4.1"
+    "@fortawesome/free-brands-svg-icons": "^6.7.2",
+    "@fortawesome/free-regular-svg-icons": "^6.7.2",
+    "@fortawesome/free-solid-svg-icons": "^6.7.2",
+    "@fortawesome/react-fontawesome": "^0.2.2",
+    "@vitejs/plugin-react": "^4.3.4",
+    "bootstrap": "^5.3.3",
+    "font-awesome": "^4.7.0",
+    "html2canvas": "^1.4.1",
+    "react": "^19.0.0",
+    "react-bootstrap": "^2.10.9",
+    "react-dom": "^19.0.0",
+    "react-router-dom": "^7.1.5"
   }
 }

@@ -1,15 +1,7 @@
 import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
 
 export default defineConfig({
-    build: {
-        rollupOptions: {
-            input: {
-                main: "index.html",
-                gallery: "gallery.html",
-            },
-        },
-    },
-    server: {
-        hmr: true, // hot module replacement
-    },
+    plugins: [react()],
+    publicDir: "public",
 });

@@ -1,0 +1,21 @@
+
+
+
+
+
+
+
+                            TODO
+                    --------------------
+
+                    Tuesday, Feb 12th, 2025
+
+                            DONE ---->   1. Manually convert mongodb publishedAt field from ISO 8601 to Date object
+
+                            DONE ----->  2. Update collection.js to take ISO 8601 date string and convert to Date object during database insertion
+
+                    3. Create basic frontend to display articles in gallery format
+
+                    4. (If time) Allow user to select limit of articles to display per page and add pagination to frontend
+
+

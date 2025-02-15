@@ -1,0 +1,25 @@
+.home {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 2em 0;
+}
+
+.home-text {
+  margin: 1em;
+}
+
+li {
+  font-size: 2.75em !important;
+}
+
+@media (max-width: 768px) {
+  .jumbotron {
+    margin: 20px 10px 20px 10px;
+  }
+
+  .home-text {
+    font-size: 1em;
+  }
+}

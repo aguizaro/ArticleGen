@@ -1,0 +1,11 @@
+.icons {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.icons a {
+  margin: 10px;
+  color: var(--bs-custom-color-text-emphasis) !important;
+}

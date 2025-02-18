@@ -5,6 +5,7 @@
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
   background-color: #242424;
+  width: 100%;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -27,10 +28,10 @@ p {
 }
 
 body {
-  margin: 0;
   display: flex;
+  margin: 0;
   place-items: center;
-  min-width: 320px;
+  width: 100vw;
   min-height: 100vh;
 }
 
@@ -39,9 +40,21 @@ h1 {
   line-height: 1.1;
 }
 
+#root {
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  height: 100vh;
+}
+
 #app {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   max-width: 1280px;
   min-width: 400px;
+  height: 100%;
   margin: 0 auto;
   padding: 1rem;
   text-align: center;
@@ -80,7 +93,7 @@ button {
   background-color: #1a1a1a;
   cursor: pointer;
   border-color: gray;
-  transition: border-color 0.25s
+  transition: border-color 0.25s;
   font-size: 1.2em;
 }
 
@@ -93,35 +106,35 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
-/*.container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}*/
 
 
 
-#title {
+
+#main-title {
   margin: 0;
   padding: 0;
   font-size: 10em;
 }
 
-#subtitle {
+#main-subtitle {
   margin: 0;
   padding: 0;
   font-size: 4em;
+}
+
+#prompt {
+  margin: 4em 0 1em 0;
 }
 
 #prompt.is-active {
   display: none;
 }
 
-#title.is-active {
+#main-title.is-active {
   font-size: 2em;
 }
-#subtitle.is-active {
+
+#main-subtitle.is-active {
   font-size: 1.5em;
 }
 
@@ -238,35 +251,37 @@ input[type="radio"] {
 }
 
 @media (max-width: 905px) {
-    #title {
-      font-size: 7em;
-    }
-    #subtitle {
-      font-size: 3em;
-    }
+  #main-title {
+    font-size: 7em;
+  }
+
+  #main-subtitle {
+    font-size: 3em;
+  }
 }
 
 @media (max-width: 768px) {
   h1 {
     font-size: 2em;
   }
+
   h2 {
     font-size: 1em;
   }
 
-  #title {
+  #main-title {
     font-size: 6em;
   }
 
-  #subtitle {
+  #main-subtitle {
+    font-size: 2em;
+  }
+
+  #main-title.is-active {
     font-size: 1.5em;
   }
 
-  #title.is-active {
-    font-size: 1.5em;
-  }
- 
- #subtitle.is-active {
+  #main-subtitle.is-active {
     font-size: 1.2em;
   }
 
@@ -284,12 +299,13 @@ input[type="radio"] {
   }
 }
 
-@media (max-width: 500px){
+@media (max-width: 500px) {
 
-  #title {
+  #main-title {
     font-size: 4em;
   }
-  #subtitle {
+
+  #main-subtitle {
     font-size: 1.2em;
   }
 

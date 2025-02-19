@@ -4,6 +4,7 @@ import "./style.css"; // Import your CSS file
 const App = () => {
   const [selectedCategory, setSelectedCategory] = useState("general");
   const [article, setArticle] = useState(null);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false); // State for dropdown visibility
 
   const categories = [
     "general",
@@ -24,8 +25,7 @@ const App = () => {
     setArticle({
       title: "Breaking: Satire Takes Over the World",
       date: new Date().toLocaleDateString(),
-      content:
-        "This is a generated satirical article about " + selectedCategory + ".",
+      content: `This is a generated satirical article about ${selectedCategory}.`,
       weblink: "#",
     });
   };
@@ -39,34 +39,43 @@ const App = () => {
 
       <p id="prompt">Select a category below to generate a news article</p>
 
+      {/* Dropdown Button */}
       <div className="dropdown">
-        <button className="dropbtn" id="dropdown-button">
+        <button
+          className="dropbtn"
+          id="dropdown-button"
+          onClick={() => setIsDropdownOpen(!isDropdownOpen)} // Toggle dropdown
+        >
           Select Category
         </button>
-        <div className="dropdown-content">
-          <div className="options">
-            {categories.map((category) => (
-              <div className="category" key={category} id={category}>
-                <label htmlFor={category}>
-                  {category.charAt(0).toUpperCase() + category.slice(1)}
-                </label>
-                <input
-                  type="radio"
-                  id={`${category}-radio`}
-                  name="category"
-                  value={category}
-                  checked={selectedCategory === category}
-                  onChange={handleCategoryChange}
-                />
-              </div>
-            ))}
+
+        {/* Dropdown Content (only shown when isDropdownOpen is true) */}
+        {isDropdownOpen && (
+          <div className="dropdown-content">
+            <div className="options">
+              {categories.map((category) => (
+                <div className="category" key={category} id={category}>
+                  <label htmlFor={category}>
+                    {category.charAt(0).toUpperCase() + category.slice(1)}
+                  </label>
+                  <input
+                    type="radio"
+                    id={`${category}-radio`}
+                    name="category"
+                    value={category}
+                    checked={selectedCategory === category}
+                    onChange={handleCategoryChange}
+                  />
+                </div>
+              ))}
+            </div>
+            <div className="submit">
+              <button id="generate-button" onClick={generateArticle}>
+                Generate Article
+              </button>
+            </div>
           </div>
-          <div className="submit">
-            <button id="generate-button" onClick={generateArticle}>
-              Generate Article
-            </button>
-          </div>
-        </div>
+        )}
       </div>
 
       {/* Show article only if one is generated */}

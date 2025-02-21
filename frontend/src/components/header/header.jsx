@@ -40,9 +40,7 @@ const Header = () => {
       <Navbar expand="lg">
         <Container>
           <Navbar.Brand href="./">
-            <h1 id="title" className="is-active">
-              ArticleGen
-            </h1>
+            <h1 id="title">ArticleGen</h1>
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">

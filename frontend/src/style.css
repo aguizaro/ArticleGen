@@ -33,6 +33,7 @@ body {
   place-items: center;
   width: 100vw;
   min-height: 100vh;
+  background-color: #242424;
 }
 
 h1 {
@@ -43,6 +44,8 @@ h1 {
 #root {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
   width: 100vw;
   height: 100vh;
 }
@@ -54,7 +57,7 @@ h1 {
   justify-content: center;
   max-width: 1280px;
   min-width: 400px;
-  height: 100%;
+  height: auto;
   margin: 0 auto;
   padding: 1rem;
   text-align: center;
@@ -117,29 +120,18 @@ button:focus-visible {
 }
 
 #main-subtitle {
-  margin: 0;
+  margin: 0 0 1em 0;
   padding: 0;
   font-size: 4em;
 }
 
 #prompt {
-  margin: 4em 0 1em 0;
+  margin: 1em 0;
 }
 
-#prompt.is-active {
-  display: none;
-}
-
-#main-title.is-active {
-  font-size: 2em;
-}
-
-#main-subtitle.is-active {
-  font-size: 1.5em;
-}
 
 .article {
-  display: none;
+  display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -148,10 +140,6 @@ button:focus-visible {
   width: 90%;
   background-color: #1a1a1a;
   border-radius: 20px;
-}
-
-.article.is-active {
-  display: flex;
 }
 
 .article img {
@@ -193,12 +181,10 @@ button:focus-visible {
   font-size: 1.2em;
 }
 
-.dropdown-content {
-  display: none;
-}
+.dropdown-content {}
 
 /* Show the dropdown content when the dropdown button is clicked */
-.dropdown-content.is-active {
+.dropdown-content {
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -277,11 +263,7 @@ input[type="radio"] {
     font-size: 2em;
   }
 
-  #main-title.is-active {
-    font-size: 1.5em;
-  }
-
-  #main-subtitle.is-active {
+  #main-subtitle {
     font-size: 1.2em;
   }
 
@@ -289,7 +271,7 @@ input[type="radio"] {
     font-size: 1.1em;
   }
 
-  .article.is-active {
+  .article {
     font-size: 0.75em;
     width: 95%;
   }

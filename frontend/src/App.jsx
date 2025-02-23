@@ -12,17 +12,37 @@ const App = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 
-  // Check for seed in the URL
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const seed = params.get("seed");
+    console.log("article changed: ", article);
+  }, [article]);
 
-    if (seed) {
-      fetchSeed(seed);
-    } else {
-      setArticle(null);
-    }
-  }, []); // Runs only once on component mount
+  useEffect(() => {
+    const fetchArticleOnMount = async () => {
+      const params = new URLSearchParams(window.location.search);
+      const seed = params.get("seed");
+
+      if (!seed) {
+        setArticle(null);
+        return;
+      }
+      try {
+        const data = await fetchSeed(seed);
+        setArticle({
+          title: data.title,
+          publishedAt: data.publishedAt,
+          seed: data.seed,
+          content: data.content,
+          urlToImage: data.urlToImage,
+        });
+      } catch (error) {
+        console.error("Error fetching article:", error);
+      } finally {
+        setIsButtonDisabled(false);
+      }
+    };
+
+    fetchArticleOnMount();
+  }, []); // runs once on mount
 
   const categories = [
     "general",
@@ -33,6 +53,13 @@ const App = () => {
     "health",
     "science",
   ];
+
+  /* 
+    NEXT: 
+    - fix seeds on mount (make sure to test with a seed currently in mongngodb database)
+    - add download functionality (html2canvas)
+    - add loading spinner
+  */
 
   const handleCategoryChange = (event) => {
     setSelectedCategory(event.target.value);
@@ -47,20 +74,13 @@ const App = () => {
       if (response.status !== 200) {
         throw new Error(data.message);
       }
-
-      setArticle({
-        title: data.title,
-        publishedAt: data.publishedAt,
-        seed: data.seed,
-        content: data.content,
-        urlToImage: data.urlToImage,
-      });
-
       setIsButtonDisabled(false);
       setIsDropdownOpen(false);
+      return data.response;
     } catch (error) {
       console.error(error);
       setIsButtonDisabled(false);
+      setIsDropdownOpen(false);
     }
   };
 
@@ -180,7 +200,6 @@ const App = () => {
       </div>
 
       {/* Show article only if one is generated */}
-      {console.log(article)}
       {article && (
         <div className="article">
           <h2 id="article-title">{article.title}</h2>

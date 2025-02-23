@@ -9,13 +9,13 @@ import Footer from "./components/footer/footer.jsx";
 import App from "./App.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
-    <HashRouter>
-      <Header />
-      <Routes>
-        <Route path="/" Component={App} />
-      </Routes>
-      <Footer />
-    </HashRouter>
-  </React.StrictMode>
+  //<React.StrictMode>
+  <HashRouter>
+    <Header />
+    <Routes>
+      <Route path="/" Component={App} />
+    </Routes>
+    <Footer />
+  </HashRouter>
+  //</React.StrictMode>
 );

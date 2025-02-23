@@ -12,7 +12,6 @@ const Header = () => {
   const [theme, setTheme] = useState(localStorage.getItem("theme") ?? "auto");
 
   const handleThemeChange = (selectedTheme) => {
-    //set theme to device default
     if (selectedTheme === "auto") {
       document
         .getElementsByTagName("html")[0]
@@ -26,8 +25,6 @@ const Header = () => {
       localStorage.setItem("theme", selectedTheme);
       return;
     }
-
-    //set theme to selected theme
     setTheme(selectedTheme);
     document
       .getElementsByTagName("html")[0]

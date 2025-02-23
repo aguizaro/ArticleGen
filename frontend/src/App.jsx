@@ -56,7 +56,6 @@ const App = () => {
 
   /* 
     NEXT: 
-    - fix seeds on mount (make sure to test with a seed currently in mongngodb database)
     - add download functionality (html2canvas)
     - add loading spinner
   */
@@ -104,7 +103,6 @@ const App = () => {
   };
 
   const generateArticle = async () => {
-    //FETCH ARTICLE FROM API
     const data = await fetchArticle();
     if (
       data.title &&
@@ -155,18 +153,16 @@ const App = () => {
       {!article && (
         <p id="prompt">Select a category below to generate a news article</p>
       )}
-
-      {/* Dropdown Button */}
       <div className="dropdown">
         <button
           className="dropbtn"
           id="dropdown-button"
-          onClick={() => setIsDropdownOpen(!isDropdownOpen)} // Toggle dropdown
+          onClick={() => setIsDropdownOpen(!isDropdownOpen)}
         >
           {article ? "Select Another Category" : "Select Category"}
         </button>
 
-        {/* Dropdown Content (only shown when isDropdownOpen is true) */}
+        {/* Dropdown only rendered when set to true */}
         {isDropdownOpen && (
           <div className="dropdown-content">
             <div className="options">
@@ -199,7 +195,7 @@ const App = () => {
         )}
       </div>
 
-      {/* Show article only if one is generated */}
+      {/* Article only rendered when not null */}
       {article && (
         <div className="article">
           <h2 id="article-title">{article.title}</h2>

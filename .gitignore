@@ -49,3 +49,6 @@ dist-ssr
 *.sw?
 
 .editorconfig
+
+#backups
+*.bak

@@ -1,15 +1,19 @@
 import React, { useState, useEffect } from "react";
-import "./style.css"; // Import your CSS file
+import Dropdown from "react-bootstrap/Dropdown";
+import Button from "react-bootstrap/Button";
+import { Spinner } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faDownload } from "@fortawesome/free-solid-svg-icons";
+import "bootstrap/dist/css/bootstrap.min.css"; // Ensure Bootstrap styles are included
+import "./style.css"; // Your custom styles
 
 const articleEndpoint =
   "https://api.letsgeneratearticles.com/article?category=";
-
 const seedEndpoint = "https://api.letsgeneratearticles.com/generated?seed=";
 
 const App = () => {
   const [selectedCategory, setSelectedCategory] = useState("general");
   const [article, setArticle] = useState(null);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 
   useEffect(() => {
@@ -42,7 +46,7 @@ const App = () => {
     };
 
     fetchArticleOnMount();
-  }, []); // runs once on mount
+  }, []);
 
   const categories = [
     "general",
@@ -54,14 +58,8 @@ const App = () => {
     "science",
   ];
 
-  /* 
-    NEXT: 
-    - add download functionality (html2canvas)
-    - add loading spinner
-  */
-
-  const handleCategoryChange = (event) => {
-    setSelectedCategory(event.target.value);
+  const handleCategoryChange = (category) => {
+    setSelectedCategory(category);
   };
 
   const fetchSeed = async (seed) => {
@@ -74,21 +72,17 @@ const App = () => {
         throw new Error(data.message);
       }
       setIsButtonDisabled(false);
-      setIsDropdownOpen(false);
       return data.response;
     } catch (error) {
       console.error(error);
       setIsButtonDisabled(false);
-      setIsDropdownOpen(false);
     }
   };
 
-  // fetch article from API given the category
   const fetchArticle = async () => {
     try {
       setIsButtonDisabled(true);
-      const category = selectedCategory;
-      const response = await fetch(`${articleEndpoint}${category}`);
+      const response = await fetch(`${articleEndpoint}${selectedCategory}`);
       const data = await response.json();
 
       if (response.status !== 200) {
@@ -105,11 +99,11 @@ const App = () => {
   const generateArticle = async () => {
     const data = await fetchArticle();
     if (
-      data.title &&
-      data.publishedAt &&
-      data.seed &&
-      data.content &&
-      data.urlToImage
+      data?.title &&
+      data?.publishedAt &&
+      data?.seed &&
+      data?.content &&
+      data?.urlToImage
     ) {
       setArticle({
         title: data.title,
@@ -118,34 +112,16 @@ const App = () => {
         content: data.content,
         urlToImage: data.urlToImage,
       });
-
-      setIsDropdownOpen(false);
     }
   };
 
-  const downloadArticle = () => {
-    // capture screen using html2canvas
-  };
-
   return (
-    <div className="container" id="app">
+    <div className="container mb-0 p-0" id="app">
       <div className="header">
-        <h1
-          id="main-title"
-          style={{
-            fontSize: article ? "6em" : "10em",
-            transition: "font-size 0.3s ease",
-          }}
-        >
+        <h1 id="main-title" style={article ? { fontSize: "0" } : {}}>
           ArticleGen
         </h1>
-        <h2
-          id="main-subtitle"
-          style={{
-            fontSize: article ? "2rem" : "4em",
-            transition: "font-size 0.3s ease",
-          }}
-        >
+        <h2 id="main-subtitle" style={article ? { fontSize: "0" } : {}}>
           Satirical News Article Generator
         </h2>
       </div>
@@ -153,68 +129,61 @@ const App = () => {
       {!article && (
         <p id="prompt">Select a category below to generate a news article</p>
       )}
-      <div className="dropdown">
-        <button
-          className="dropbtn"
-          id="dropdown-button"
-          onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-        >
-          {article ? "Select Another Category" : "Select Category"}
-        </button>
-
-        {/* Dropdown only rendered when set to true */}
-        {isDropdownOpen && (
-          <div className="dropdown-content">
-            <div className="options">
-              {categories.map((category) => (
-                <div className="category" key={category} id={category}>
-                  <label htmlFor={category}>
-                    {category.charAt(0).toUpperCase() + category.slice(1)}
-                  </label>
-                  <input
-                    type="radio"
-                    id={`${category}-radio`}
-                    name="category"
-                    value={category}
-                    checked={selectedCategory === category}
-                    onChange={handleCategoryChange}
-                  />
-                </div>
-              ))}
-            </div>
-            <div className="submit">
-              <button
-                id="generate-button"
-                onClick={generateArticle}
-                disabled={isButtonDisabled}
-              >
-                Generate Article
-              </button>
-            </div>
-          </div>
-        )}
-      </div>
 
       {/* Article only rendered when not null */}
       {article && (
-        <div className="article">
-          <h2 id="article-title">{article.title}</h2>
+        <div className="article mb-0">
+          <h2 id="article-title" className=" text-center m-4">
+            {article.title}
+          </h2>
           <img
             src={`data:image/png;base64,${article.urlToImage}`}
             alt="Article Image"
             id="article-image"
           />
-          <div className="article-body">
-            <p id="article-date">{article.publishedAt}</p>
-            <p id="article-content">{article.content}</p>
-          </div>
-          <div className="download">
-            <button id="download-button" onClick={downloadArticle}>
-              Download Article
-            </button>
+          <div className="article-body mb-0">
+            <p>
+              <strong id="article-date">{article.publishedAt}</strong>
+            </p>
+            <p className="lead mb-0" id="article-content">
+              {article.content}
+            </p>
           </div>
         </div>
       )}
+
+      {/* Bootstrap Dropdown for Category Selection */}
+      <div className="d-flex justify-content-center">
+        {article && (
+          <Button>
+            <FontAwesomeIcon icon={faDownload} />
+          </Button>
+        )}
+        <Dropdown className="mx-2">
+          <Dropdown.Toggle>
+            {selectedCategory.charAt(0).toUpperCase() +
+              selectedCategory.slice(1)}
+          </Dropdown.Toggle>
+          <Dropdown.Menu>
+            {categories.map((category) => (
+              <Dropdown.Item
+                key={category}
+                active={selectedCategory === category}
+                onClick={() => handleCategoryChange(category)}
+              >
+                {category.charAt(0).toUpperCase() + category.slice(1)}
+              </Dropdown.Item>
+            ))}
+          </Dropdown.Menu>
+        </Dropdown>
+        <Button onClick={generateArticle} disabled={isButtonDisabled}>
+          {isButtonDisabled ? (
+            <Spinner animation="border" size="sm" />
+          ) : (
+            "Generate"
+          )}
+        </Button>
+      </div>
     </div>
   );
 };

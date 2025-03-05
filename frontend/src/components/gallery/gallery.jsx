@@ -1,28 +1,44 @@
 import React, { useState, useEffect } from "react";
 import { Pagination } from "react-bootstrap";
+import { Spinner } from "react-bootstrap";
 
-// Mock images for testing
-const mockImages = Array.from({ length: 30 }, (_, i) => ({
-  id: i + 1,
-  url: `https://via.placeholder.com/300?text=Image+${i + 1}`,
-  title: `Image ${i + 1}`,
-  description: `This is the description for Image ${i + 1}`,
-}));
+const galleryEndpoint = "https://api.letsgeneratearticles.com/gallery";
+const fetchGallery = async (page, limit) => {
+  try {
+    if (!page || !limit) {
+      throw new Error("Page and limit are required");
+    }
+    const response = await fetch(
+      `${galleryEndpoint}?page=${page}&limit=${limit}`
+    );
+    if (!response.ok) {
+      throw new Error("Error fetching gallery");
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching gallery:", error);
+  }
+};
 
 const Gallery = () => {
-  const [images, setImages] = useState([]); // Holds images for the current page
+  const [articles, setArticles] = useState([]); // Holds images for the current page
   const [currentPage, setCurrentPage] = useState(1);
-  const imagesPerPage = 9;
+  const [totalPages, setTotalPages] = useState(0);
+  const [articlesPerPage, setArticlesPerPage] = useState(9);
 
   useEffect(() => {
-    // Simulate fetching paginated images
-    const fetchImages = () => {
-      const startIndex = (currentPage - 1) * imagesPerPage;
-      const endIndex = startIndex + imagesPerPage;
-      setImages(mockImages.slice(startIndex, endIndex));
+    const fetchGalleryOnMount = async () => {
+      try {
+        const data = await fetchGallery(currentPage, articlesPerPage);
+        setArticles(data.articles);
+        setTotalPages(data.pagination.totalPages);
+      } catch (error) {
+        console.error("Error fetching gallery:", error);
+      }
     };
 
-    fetchImages();
+    fetchGalleryOnMount();
   }, [currentPage]);
 
   // Handles pagination click
@@ -30,20 +46,24 @@ const Gallery = () => {
     setCurrentPage(pageNumber);
   };
 
-  // Total pages calculation
-  const totalPages = Math.ceil(mockImages.length / imagesPerPage);
-
   return (
     <div className="container mt-4">
-      <h1 className="text-center">Gallery</h1>
+      {articles.length !== 0 && <h1 className="text-center mb-4">Gallery</h1>}
+      <span className="text-center d-block mb-4">
+        {articles.length === 0 && <Spinner animation="border" />}
+      </span>
       <div className="row">
-        {images.map((image) => (
-          <div key={image.id} className="col-md-4 mb-4">
+        {articles.map((a) => (
+          <div key={a.seed} className="col-md-4 mb-4">
             <div className="card">
-              <img src={image.url} alt={image.title} className="card-img-top" />
+              <img
+                src={`data:image/png;base64,${a.urlToImage}`}
+                alt={a.title}
+                className="card-img-top"
+              />
               <div className="card-body">
-                <h5 className="card-title">{image.title}</h5>
-                <p className="card-text">{image.description}</p>
+                <h5 className="card-title lead fs-5 text-center">{a.title}</h5>
+                <p className="card-text fw-bold text-center">{a.publishedAt}</p>
               </div>
             </div>
           </div>
@@ -51,17 +71,23 @@ const Gallery = () => {
       </div>
 
       {/* Pagination */}
-      <Pagination className="justify-content-center">
-        {Array.from({ length: totalPages }, (_, i) => (
-          <Pagination.Item
-            key={i + 1}
-            active={i + 1 === currentPage}
-            onClick={() => handlePageChange(i + 1)}
-          >
-            {i + 1}
-          </Pagination.Item>
-        ))}
-      </Pagination>
+      {articles.length !== 0 && (
+        <Pagination className="justify-content-center">
+          <Pagination.First onClick={() => handlePageChange(1)} />
+          <Pagination.Prev onClick={() => handlePageChange(currentPage - 1)} />
+          {Array.from({ length: totalPages }, (_, i) => (
+            <Pagination.Item
+              key={i + 1}
+              active={i + 1 === currentPage}
+              onClick={() => handlePageChange(i + 1)}
+            >
+              {i + 1}
+            </Pagination.Item>
+          ))}
+          <Pagination.Next onClick={() => handlePageChange(currentPage + 1)} />
+          <Pagination.Last onClick={() => handlePageChange(totalPages)} />
+        </Pagination>
+      )}
     </div>
   );
 };

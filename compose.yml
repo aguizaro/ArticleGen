@@ -28,7 +28,7 @@ services:
     container_name: backend
     restart: always
     environment:
-      - PORT=3000 
+      - PORT=3000
       - MONGO_URI=${MONGO_URI}
       - OPENAI_API_KEY=${OPENAI_API_KEY}
       - NEWS_API_KEY=${NEWS_API_KEY}
@@ -39,7 +39,8 @@ services:
       - "traefik.http.routers.backend.tls.certresolver=myresolver"
       - "traefik.http.services.backend.loadbalancer.server.port=3000"
     depends_on:
-      - mongodb
+      mongodb:
+        condition: service_healthy
     networks:
       - internal
       - web
@@ -70,6 +71,11 @@ services:
       - mongodb_data:/data/db
     networks:
       - internal # Added network for MongoDB
+    healthcheck:
+      test: ["CMD", "mongo", "--eval", "db.runCommand('ping').ok"]
+      interval: 10s
+      timeout: 50s
+      retries: 5
 
 volumes:
   mongodb_data:

@@ -10,11 +10,12 @@ import Gallery from "./components/gallery/gallery.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <BrowserRouter>
+    <BrowserRouter basename="/">
       <Header />
       <Routes>
         <Route path="/" Component={App} />
         <Route path="/gallery" Component={Gallery} />
+        <Route path="*" Component={App} />
       </Routes>
       <Footer />
     </BrowserRouter>

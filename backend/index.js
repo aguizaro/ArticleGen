@@ -167,7 +167,10 @@ app.get("/gallery", async (req, res) => {
       .toArray();
 
     if (articles.length === 0) throw new Error("No articles found");
-    const totalArticles = articles.length;
+    const totalArticles = await mongoClient
+      .db("admin")
+      .collection("seeds")
+      .countDocuments({ publishedAt: { $exists: true } });
 
     res.json({
       articles,

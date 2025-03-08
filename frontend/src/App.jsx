@@ -112,6 +112,8 @@ const App = () => {
         content: data.content,
         urlToImage: data.urlToImage,
       });
+      //set url to be letsgeneratearticles.com/?seed=seed
+      window.history.pushState({}, "", `?seed=${data.seed}`);
     }
   };
 

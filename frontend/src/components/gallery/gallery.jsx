@@ -55,17 +55,26 @@ const Gallery = () => {
       <div className="row">
         {articles.map((a) => (
           <div key={a.seed} className="col-md-4 mb-4">
-            <div className="card">
-              <img
-                src={`data:image/png;base64,${a.urlToImage}`}
-                alt={a.title}
-                className="card-img-top"
-              />
-              <div className="card-body">
-                <h5 className="card-title lead fs-5 text-center">{a.title}</h5>
-                <p className="card-text fw-bold text-center">{a.publishedAt}</p>
+            <a
+              href={`https://www.letsgeneratearticles.com/?seed=${a.seed}`}
+              target="_blank"
+            >
+              <div className="card">
+                <img
+                  src={`data:image/png;base64,${a.urlToImage}`}
+                  alt={a.title}
+                  className="card-img-top"
+                />
+                <div className="card-body">
+                  <h5 className="card-title lead fs-5 text-center">
+                    {a.title}
+                  </h5>
+                  <p className="card-text fw-bold text-center">
+                    {a.publishedAt}
+                  </p>
+                </div>
               </div>
-            </div>
+            </a>
           </div>
         ))}
       </div>

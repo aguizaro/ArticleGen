@@ -31,7 +31,19 @@ const Gallery = () => {
     const fetchGalleryOnMount = async () => {
       try {
         const data = await fetchGallery(currentPage, articlesPerPage);
-        setArticles(data.articles);
+        const formattedArticles = data.articles.map((a) => ({
+          ...a,
+          publishedAt: new Date(a.publishedAt).toLocaleDateString("en-US", {
+            weekday: "long",
+            month: "long",
+            day: "numeric",
+            year: "numeric",
+            hour: "numeric",
+            minute: "numeric",
+            hour12: true,
+          }),
+        }));
+        setArticles(formattedArticles);
         setTotalPages(data.pagination.totalPages);
       } catch (error) {
         console.error("Error fetching gallery:", error);

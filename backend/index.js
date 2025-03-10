@@ -98,21 +98,10 @@ app.get("/article", async (req, res) => {
     console.log(`Found ${response.length} articles with category: ${category}`);
     const index = Math.floor(Math.random() * response.length);
     const data = response[index]; // random article from db in category
-    const articleDate = new Date(data.publishedAt).toLocaleString("en-US", {
-      weekday: "long",
-      month: "long",
-      day: "numeric",
-      year: "numeric",
-      hour: "numeric",
-      minute: "numeric",
-      hour12: true, // Ensures AM/PM format
-    });
-    console.log(`Using article ${index}`);
-
     const article = await generateArticle(data);
     const articleData = JSON.parse(article.message.content);
     articleData.urlToImage = await urlToBase64(data.urlToImage);
-    articleData.publishedAt = articleDate;
+    articleData.publishedAt = new Date(data.publishedAt);
 
     const seed = generateSeed();
     articleData.seed = seed;
@@ -151,6 +140,7 @@ app.get("/generated", async (req, res) => {
 app.get("/gallery", async (req, res) => {
   const page = parseInt(req.query.page) || 1;
   const limit = parseInt(req.query.limit) || 10;
+  const maxArticles = 120;
 
   const skip = (page - 1) * limit;
 

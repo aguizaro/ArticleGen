@@ -12,12 +12,14 @@ const articleEndpoint =
 const seedEndpoint = "https://api.letsgeneratearticles.com/generated?seed=";
 
 const App = () => {
+  const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState("general");
   const [article, setArticle] = useState(null);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 
   useEffect(() => {
-    console.log("article changed: ", article);
+    if (!article) return;
+    setLoading(false);
   }, [article]);
 
   useEffect(() => {
@@ -26,6 +28,7 @@ const App = () => {
       const seed = params.get("seed");
 
       if (!seed) {
+        setLoading(false);
         setArticle(null);
         return;
       }
@@ -33,10 +36,18 @@ const App = () => {
         const data = await fetchSeed(seed);
         setArticle({
           title: data.title,
-          publishedAt: data.publishedAt,
           seed: data.seed,
           content: data.content,
           urlToImage: data.urlToImage,
+          publishedAt: new Date(data.publishedAt).toLocaleString("en-US", {
+            weekday: "long",
+            month: "long",
+            day: "numeric",
+            year: "numeric",
+            hour: "numeric",
+            minute: "numeric",
+            hour12: true,
+          }),
         });
       } catch (error) {
         console.error("Error fetching article:", error);
@@ -118,20 +129,28 @@ const App = () => {
   };
 
   return (
-    <div className="container mb-0 p-0" id="app">
-      <div className="header">
-        <h1 id="main-title" style={article ? { fontSize: "0" } : {}}>
-          ArticleGen
-        </h1>
-        <h2 id="main-subtitle" style={article ? { fontSize: "0" } : {}}>
-          Satirical News Article Generator
-        </h2>
-      </div>
-
-      {!article && (
-        <p id="prompt">Select a category below to generate a news article</p>
+    <div>
+      {loading ? (
+        <div className="d-flex justify-content-center align-items-center">
+          <Spinner animation="border" />
+        </div>
+      ) : (
+        <div className="container mb-0 p-0" id="app">
+          <div className="header">
+            <h1 id="main-title" style={article ? { fontSize: "0" } : {}}>
+              ArticleGen
+            </h1>
+            <h2 id="main-subtitle" style={article ? { fontSize: "0" } : {}}>
+              Satirical News Article Generator
+            </h2>
+          </div>
+          {!article && (
+            <p id="prompt">
+              Select a category below to generate a news article
+            </p>
+          )}
+        </div>
       )}
-
       {/* Article only rendered when not null */}
       {article && (
         <div className="article mb-0">
@@ -154,37 +173,40 @@ const App = () => {
         </div>
       )}
 
-      {/* Bootstrap Dropdown for Category Selection */}
-      <div className="d-flex justify-content-center">
-        {article && (
-          <Button>
-            <FontAwesomeIcon icon={faDownload} />
-          </Button>
+      <div>
+        {!loading && (
+          <div className="d-flex justify-content-center">
+            {article && (
+              <Button>
+                <FontAwesomeIcon icon={faDownload} />
+              </Button>
+            )}
+            <Dropdown className="mx-2">
+              <Dropdown.Toggle>
+                {selectedCategory.charAt(0).toUpperCase() +
+                  selectedCategory.slice(1)}
+              </Dropdown.Toggle>
+              <Dropdown.Menu>
+                {categories.map((category) => (
+                  <Dropdown.Item
+                    key={category}
+                    active={selectedCategory === category}
+                    onClick={() => handleCategoryChange(category)}
+                  >
+                    {category.charAt(0).toUpperCase() + category.slice(1)}
+                  </Dropdown.Item>
+                ))}
+              </Dropdown.Menu>
+            </Dropdown>
+            <Button onClick={generateArticle} disabled={isButtonDisabled}>
+              {isButtonDisabled ? (
+                <Spinner animation="border" size="sm" />
+              ) : (
+                "Generate"
+              )}
+            </Button>
+          </div>
         )}
-        <Dropdown className="mx-2">
-          <Dropdown.Toggle>
-            {selectedCategory.charAt(0).toUpperCase() +
-              selectedCategory.slice(1)}
-          </Dropdown.Toggle>
-          <Dropdown.Menu>
-            {categories.map((category) => (
-              <Dropdown.Item
-                key={category}
-                active={selectedCategory === category}
-                onClick={() => handleCategoryChange(category)}
-              >
-                {category.charAt(0).toUpperCase() + category.slice(1)}
-              </Dropdown.Item>
-            ))}
-          </Dropdown.Menu>
-        </Dropdown>
-        <Button onClick={generateArticle} disabled={isButtonDisabled}>
-          {isButtonDisabled ? (
-            <Spinner animation="border" size="sm" />
-          ) : (
-            "Generate"
-          )}
-        </Button>
       </div>
     </div>
   );

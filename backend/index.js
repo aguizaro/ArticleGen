@@ -148,8 +148,8 @@ app.get("/gallery", async (req, res) => {
     await mongoClient.connect();
 
     const articles = await mongoClient
-      .db("admin")
-      .collection("seeds")
+      .db("content")
+      .collection("gallery")
       .find({ publishedAt: { $exists: true } })
       .sort({ publishedAt: -1 })
       .skip(skip)
@@ -158,8 +158,8 @@ app.get("/gallery", async (req, res) => {
 
     if (articles.length === 0) throw new Error("No articles found");
     const totalArticles = await mongoClient
-      .db("admin")
-      .collection("seeds")
+      .db("content")
+      .collection("gallery")
       .countDocuments({ publishedAt: { $exists: true } });
 
     res.json({

@@ -98,13 +98,12 @@ app.get("/article", async (req, res) => {
     console.log(`Found ${response.length} articles with category: ${category}`);
     const index = Math.floor(Math.random() * response.length);
     const data = response[index]; // random article from db in category
-    const article = await generateArticle(data);
-    const articleData = JSON.parse(article.message.content);
+    const generatedArticle = await generateArticle(data);
+    const articleData = JSON.parse(generatedArticle.message.content);
     articleData.urlToImage = await urlToBase64(data.urlToImage);
-    articleData.publishedAt = new Date(data.publishedAt);
+    articleData.publishedAt = new Date(articleData.publishedAt);
 
-    const seed = generateSeed();
-    articleData.seed = seed;
+    articleData.seed = generateSeed();
 
     // insert generated article into seeds collection
     await mongoClient.db("admin").collection("seeds").insertOne(articleData);

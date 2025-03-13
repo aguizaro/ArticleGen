@@ -118,7 +118,15 @@ const App = () => {
     ) {
       setArticle({
         title: data.title,
-        publishedAt: data.publishedAt,
+        publishedAt: new Date(data.publishedAt).toLocaleString("en-US", {
+          weekday: "long",
+          month: "long",
+          day: "numeric",
+          year: "numeric",
+          hour: "numeric",
+          minute: "numeric",
+          hour12: true,
+        }),
         seed: data.seed,
         content: data.content,
         urlToImage: data.urlToImage,

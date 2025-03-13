@@ -116,10 +116,7 @@ const Gallery = () => {
           {/* Page numbers around current page */}
           {Array.from({ length: totalPages }, (_, i) => i + 1)
             .filter(
-              (page) =>
-                page === 1 ||
-                page === totalPages ||
-                (page >= currentPage - 2 && page <= currentPage + 2)
+              (page) => page >= currentPage - 2 && page <= currentPage + 2
             )
             .map((page) => (
               <Pagination.Item

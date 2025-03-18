@@ -166,7 +166,11 @@ const App = () => {
             {article.title}
           </h2>
           <img
-            src={`data:image/png;base64,${article.urlToImage}`}
+            src={
+              article.urlToImage
+                ? `data:image/png;base64,${article.urlToImage}`
+                : "https://picsum.photos/1280/720"
+            }
             alt="Article Image"
             id="article-image"
           />

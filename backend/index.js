@@ -15,15 +15,25 @@ const mongoClient = new MongoClient(process.env.MONGO_URI, {
 // image processing -----------------------------------------------------
 const axios = require("axios");
 
-// convert image URL to base64 encoding
-async function urlToBase64(imageUrl) {
-  try {
-    const response = await axios.get(imageUrl, { responseType: "arraybuffer" });
-    const imageData = Buffer.from(response.data, "binary").toString("base64");
-    return imageData;
-  } catch (error) {
-    console.error("Error downloading image:", error);
-    return null;
+// Convert image URL to base64 encoding
+async function urlToBase64(imageUrl, retries = 1, delay = 1000) {
+  const downloadImage = async (url) => {
+    const response = await axios.get(url, { responseType: "arraybuffer" });
+    return Buffer.from(response.data, "binary").toString("base64");
+  };
+
+  for (let attempt = 0; attempt <= retries; attempt++) {
+    try {
+      return await downloadImage(imageUrl);
+    } catch (error) {
+      console.error(
+        `Error downloading image (Attempt ${attempt + 1}):`,
+        error.message
+      );
+      if (attempt === retries) return null;
+
+      await new Promise((resolve) => setTimeout(resolve, delay));
+    }
   }
 }
 

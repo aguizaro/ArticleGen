@@ -73,7 +73,11 @@ const Gallery = () => {
             >
               <div className="card">
                 <img
-                  src={`data:image/png;base64,${a.urlToImage}`}
+                  src={
+                    a.urlToImage
+                      ? `data:image/png;base64,${a.urlToImage}`
+                      : "https://picsum.photos/1280/720"
+                  }
                   alt={a.title}
                   className="card-img-top"
                 />

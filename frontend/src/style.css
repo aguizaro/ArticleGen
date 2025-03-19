@@ -77,27 +77,3 @@ a:hover {
   border-radius: 20px;
   max-width: 100%;
 }
-
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-
-  a:hover {
-    color: #747bff;
-  }
-
-  button {
-    background-color: #eaeaea;
-  }
-
-  .options {
-    background-color: #c4c4c4;
-  }
-
-  .article {
-    background-color: #eaeaea;
-  }
-
-}

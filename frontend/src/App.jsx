@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDownload } from "@fortawesome/free-solid-svg-icons";
 import "bootstrap/dist/css/bootstrap.min.css"; // Ensure Bootstrap styles are included
 import "./style.css"; // Your custom styles
+import html2canvas from "html2canvas";
 
 const articleEndpoint =
   "https://api.letsgeneratearticles.com/article?category=";
@@ -136,6 +137,25 @@ const App = () => {
     }
   };
 
+  const captureScreen = async () => {
+    const backgroundColor =
+      document.getElementsByTagName("html")[0].getAttribute("data-bs-theme") ===
+      "dark"
+        ? "#212529"
+        : "#ffffff";
+    const articleElement = document.getElementById("article-container");
+    const articleScreen = await html2canvas(articleElement, {
+      logging: true,
+      ignoreElements: (element) => element.id === "button-container",
+      backgroundColor: backgroundColor,
+    });
+
+    const link = document.createElement("a");
+    link.href = articleScreen.toDataURL();
+    link.download = "article-screenshot.png";
+    link.click();
+  };
+
   return (
     <div className="d-flex flex-column justify-content-center align-items-center">
       {loading ? (
@@ -161,7 +181,10 @@ const App = () => {
       )}
       {/* Article only rendered when not null */}
       {article && (
-        <div className="article mb-0 justify-content-center align-items-center">
+        <div
+          className="article mb-0 justify-content-center align-items-center"
+          id="article-container"
+        >
           <h2 id="article-title" className=" text-center m-4">
             {article.title}
           </h2>
@@ -187,10 +210,13 @@ const App = () => {
 
       <div>
         {!loading && (
-          <div className="d-flex justify-content-center">
+          <div className="d-flex justify-content-center" id="button-container">
             {article && (
               <Button>
-                <FontAwesomeIcon icon={faDownload} />
+                <FontAwesomeIcon
+                  icon={faDownload}
+                  onClick={() => captureScreen()}
+                />
               </Button>
             )}
             <Dropdown className="mx-2">

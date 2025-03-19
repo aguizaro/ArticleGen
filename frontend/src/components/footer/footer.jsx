@@ -24,14 +24,14 @@ const Footer = () => {
           <a
             href="https://www.linkedin.com/in/tonyguizar/"
             target="_blank"
-            rel="noreferrer"
+            rel="noopener noreferrer"
           >
             <FontAwesomeIcon icon={faLinkedin} size="3x" />
           </a>
           <a
             href="https://www.github.com/aguizaro/ArticleGen#articlegen"
             target="_blank"
-            rel="noreferrer"
+            rel="noopener noreferrer"
           >
             <FontAwesomeIcon icon={faGithub} size="3x" />
           </a>

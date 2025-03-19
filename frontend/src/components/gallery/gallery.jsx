@@ -70,6 +70,7 @@ const Gallery = () => {
             <a
               href={`https://www.letsgeneratearticles.com/?seed=${a.seed}`}
               target="_blank"
+              rel="noopener noreferrer"
             >
               <div className="card">
                 <img

@@ -137,7 +137,7 @@ const App = () => {
   };
 
   return (
-    <div>
+    <div className="d-flex flex-column justify-content-center align-items-center">
       {loading ? (
         <div className="d-flex justify-content-center align-items-center">
           <Spinner animation="border" />
@@ -161,7 +161,7 @@ const App = () => {
       )}
       {/* Article only rendered when not null */}
       {article && (
-        <div className="article mb-0">
+        <div className="article mb-0 justify-content-center align-items-center">
           <h2 id="article-title" className=" text-center m-4">
             {article.title}
           </h2>

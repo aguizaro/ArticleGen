@@ -9,6 +9,10 @@ The app is built with **React + Vite** on the frontend and **Node.js + Express**
 The entire application is **containerized with Docker** and deployed on an **AWS Lightsail VPS**, with **Traefik** acting as a reverse proxy and **Let's Encrypt** handling SSL certificates.
 
 ## 🔗 Live App
+<p align="center">
+  <img src="https://github.com/aguizaro/TonyGuizar/blob/main/public/img/AG2.png?raw=true" width="49%">
+  <img src="https://github.com/aguizaro/TonyGuizar/blob/main/public/img/AG1.png?raw=true" width="49%">
+</p>
 
 Check it out here → [LetsGenerateArticles.com](http://letsgeneratearticles.com/)
 

@@ -67,11 +67,7 @@ const Gallery = () => {
       <div className="row">
         {articles.map((a) => (
           <div key={a.seed} className="col-md-4 mb-4">
-            <a
-              href={`https://www.letsgeneratearticles.com/?seed=${a.seed}`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
+            <a href={`https://www.letsgeneratearticles.com/?seed=${a.seed}`}>
               <div className="card">
                 <img
                   src={

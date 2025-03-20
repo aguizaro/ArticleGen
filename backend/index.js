@@ -56,7 +56,7 @@ async function generateArticle(data) {
       {
         role: "system",
         content:
-          "You will receive a title and content for a news article. Your job is to convert this into a complete “The Onion”-style satirical news article. Your article must be absurd and funny. You can make up fake content. Include at least one social commentary from a relevant source that contributes to the satire. The title must capture the satirical aspect of the article. Respond with json format for the title and content. Limit the content to a maximum of 1000 words.",
+          "You will receive a title and content for a news article. Your job is to convert this into a complete “The Onion”-style satirical news article. Your article must be absurd and funny. You can make up fake content. Include at least one social commentary from a relevant source that contributes to the satire. The title must capture the satirical aspect of the article. Respond with json format for the title and content. Limit the content to a maximum of 1000 words. Don't include the article source in the title.",
       },
       {
         role: "user",

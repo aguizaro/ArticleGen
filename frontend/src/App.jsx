@@ -182,7 +182,7 @@ const App = () => {
       {/* Article only rendered when not null */}
       {article && (
         <div
-          className="article mb-0 justify-content-center align-items-center"
+          className="article m-0 p-0 justify-content-center align-items-center"
           id="article-container"
         >
           <h2 id="article-title" className=" text-center m-4">

@@ -1,8 +1,6 @@
 const { MongoClient } = require("mongodb"); // mongodb v2 only uses commonjs modules - do not import with ES6 syntax
-const mongoClient = new MongoClient(process.env.MONGO_URI, {
-  useUnifiedTopology: true,
-});
-const DB_LIMIT = 120;
+const mongoClient = new MongoClient(process.env.MONGO_URI, {});
+const DB_LIMIT = 200;
 
 mongoClient.on("connectionClosed", () => console.log("DB CONNECTION CLOSED"));
 mongoClient.on("connectionCreated", () => console.log("DB CONNECTION CREATED"));

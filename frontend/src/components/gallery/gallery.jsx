@@ -26,9 +26,13 @@ const Gallery = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [articlesPerPage, setArticlesPerPage] = useState(9);
+  const [isLoading, setIsLoading] = useState(null);
+  const [pendingPage, setPendingPage] = useState(null);
 
   useEffect(() => {
+    const pageToFetch = pendingPage ?? currentPage;
     const fetchGalleryOnMount = async () => {
+      setIsLoading(true);
       try {
         const data = await fetchGallery(currentPage, articlesPerPage);
         const formattedArticles = data.articles.map((a) => ({
@@ -47,15 +51,20 @@ const Gallery = () => {
         setTotalPages(data.pagination.totalPages);
       } catch (error) {
         console.error("Error fetching gallery:", error);
+      } finally {
+        setIsLoading(false);
+        setCurrentPage(pageToFetch);
+        setPendingPage(null); 
       }
     };
-
     fetchGalleryOnMount();
-  }, [currentPage]);
+  }, [pendingPage]);
 
   // Handles pagination click
   const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber);
+    if (pageNumber !== currentPage && !isLoading){
+      setPendingPage(pageNumber);
+    }
   };
 
   return (
@@ -97,17 +106,17 @@ const Gallery = () => {
         <Pagination className="justify-content-center">
           <Pagination.First
             onClick={() => handlePageChange(1)}
-            disabled={currentPage === 1}
+            disabled={isLoading || currentPage === 1}
           />
           <Pagination.Prev
             onClick={() => handlePageChange(currentPage - 1)}
-            disabled={currentPage === 1}
+            disabled={isLoading || currentPage === 1}
           />
 
           {/* First page */}
           {currentPage > 3 && (
             <>
-              <Pagination.Item onClick={() => handlePageChange(1)}>
+              <Pagination.Item onClick={() => handlePageChange(1)} disabled={isLoading}>
                 1
               </Pagination.Item>
               {currentPage > 4 && <Pagination.Ellipsis disabled />}
@@ -124,6 +133,7 @@ const Gallery = () => {
                 key={page}
                 active={page === currentPage}
                 onClick={() => handlePageChange(page)}
+                disabled={isLoading}
               >
                 {page}
               </Pagination.Item>
@@ -133,7 +143,7 @@ const Gallery = () => {
           {currentPage < totalPages - 2 && (
             <>
               {currentPage < totalPages - 3 && <Pagination.Ellipsis disabled />}
-              <Pagination.Item onClick={() => handlePageChange(totalPages)}>
+              <Pagination.Item onClick={() => handlePageChange(totalPages)} disabled={isLoading}>
                 {totalPages}
               </Pagination.Item>
             </>
@@ -141,11 +151,11 @@ const Gallery = () => {
 
           <Pagination.Next
             onClick={() => handlePageChange(currentPage + 1)}
-            disabled={currentPage === totalPages}
+            disabled={isLoading || currentPage === totalPages}
           />
           <Pagination.Last
             onClick={() => handlePageChange(totalPages)}
-            disabled={currentPage === totalPages}
+            disabled={isLoading || currentPage === totalPages}
           />
         </Pagination>
       )}

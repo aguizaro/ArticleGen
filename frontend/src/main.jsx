@@ -9,7 +9,6 @@ import App from "./App.jsx";
 import Gallery from "./components/gallery/gallery.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
     <BrowserRouter basename="/">
       <Header />
       <Routes>
@@ -19,5 +18,4 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       </Routes>
       <Footer />
     </BrowserRouter>
-  </React.StrictMode>
 );

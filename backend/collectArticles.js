@@ -153,7 +153,7 @@ const insertData = async (articles, category) => {
           content: article.content,
         },
       ]);
-      console.log(`${index}: ${article.title}`);
+      console.log(`${index}: ${article.title} - ${article.publishedAt}`);
       index++;
     }
   } catch (error) {

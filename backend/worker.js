@@ -27,6 +27,8 @@ const galleryQueue = new Worker('gallery', async job => {
       await gallery.deleteOne({ _id: oldest[0]._id });
       console.log(`Trimmed oldest gallery article: ${oldest[0]._id} - published: ${oldest[0].publishedAt}`);
     }
+  } else {
+    console.log(`Gallery count is within limit: ${count}`);
   }
 }, { connection: redis });
 

@@ -2,7 +2,7 @@
 const ExpressJS = require("express");
 const app = ExpressJS();
 
-// cors -----------------------------------------------------
+// cors -------------------------------------------------------
 const cors = require("cors");
 app.use(cors({ origin: "*" }));
 
@@ -11,6 +11,13 @@ const MongoClient = require("mongodb").MongoClient;
 const mongoClient = new MongoClient(process.env.MONGO_URI, {
   useUnifiedTopology: true,
 }); //options object to avoid deprecation warning on aws server -- not needed on local server bc mongodb is up to date
+
+
+// bullmq --------------------------------------------------------
+const { Worker } = require("bullmq");
+const Redis = require("ioredis");
+const redis = new Redis({ host: process.env.REDIS_HOST || "localhost" });
+const galleryQueue = new Queue("gallery", { connection: redis });
 
 // image processing -----------------------------------------------------
 const axios = require("axios");
@@ -116,8 +123,11 @@ app.get("/article", async (req, res) => {
 
     // insert generated article into seeds collection
     await mongoClient.db("admin").collection("seeds").insertOne(articleData);
+    // add article to gallery queue
+    await galleryQueue.add("gallery", articleData);
 
-    console.log("Generated article with seed", articleData.seed);
+    console.log(`Generated article with seed: ${articleData.seed} - published: ${articleData.publishedAt}`);
+
     res.status(200).json({ response: articleData });
   } catch (error) {
     res.status(400).json({ message: error.message });

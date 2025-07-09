@@ -16,7 +16,11 @@ const mongoClient = new MongoClient(process.env.MONGO_URI, {
 // bullmq --------------------------------------------------------
 const { Queue } = require("bullmq");
 const Redis = require("ioredis");
-const redis = new Redis({ host: process.env.REDIS_HOST || "redis" });
+const redis = new Redis({ host: process.env.REDIS_HOST || "redis",
+  port: process.env.REDIS_PORT || 6379,
+  maxRetriesPerRequest: null, // must be explicitly set here (required for BullMQ)
+
+});
 const galleryQueue = new Queue("gallery", { connection: redis });
 
 // image processing -----------------------------------------------------

@@ -77,7 +77,7 @@ services:
     build: ./backend
     container_name: worker
     restart: always
-    command: node worker.js
+    command: ["node", "worker.js"]
     environment:
       - MONGO_URI=${MONGO_URI}
       - REDIS_HOST=redis

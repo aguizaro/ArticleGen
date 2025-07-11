@@ -122,6 +122,7 @@ app.get("/article", async (req, res) => {
     const articleData = JSON.parse(generatedArticle.message.content);
     articleData.urlToImage = await urlToBase64(data.urlToImage);
     articleData.publishedAt = new Date(data.publishedAt);
+    articleData.createdAt = new Date();
 
     articleData.seed = generateSeed();
 

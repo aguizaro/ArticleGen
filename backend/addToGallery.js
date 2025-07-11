@@ -11,6 +11,7 @@ const { MongoClient } = require("mongodb");
     const gallery = contentDb.collection("gallery");
 
     const article = JSON.parse(process.argv[2]); // passed via CLI args
+    article.createdAt = new Date();
 
     await gallery.insertOne(article);
     console.log("Inserted into gallery:", article.seed);

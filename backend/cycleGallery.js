@@ -38,6 +38,7 @@ async function updateGallery() {
       attempts++;
       // random article
       const newArticle = recentSeeds[Math.floor(Math.random() * recentSeeds.length)];
+      newArticle.createdAt = new Date();
 
       try {
         await galleryCollection.insertOne(newArticle);

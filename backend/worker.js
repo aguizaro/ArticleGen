@@ -12,6 +12,7 @@ const redis = new Redis({ host: process.env.REDIS_HOST || 'redis',
 
 const galleryQueue = new Worker('gallery', async job => {
   const article = job.data;
+  article.createdAt = new Date();
 
   await mongoClient.connect();
   const contentDb = mongoClient.db('content');

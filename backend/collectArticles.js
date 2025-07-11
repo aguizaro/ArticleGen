@@ -151,6 +151,7 @@ const insertData = async (articles, category) => {
           urlToImage: article.urlToImage,
           publishedAt: new Date(article.publishedAt),
           content: article.content,
+          createdAt: new Date(),
         },
       ]);
       console.log(`${index}: ${article.title} - ${article.publishedAt}`);

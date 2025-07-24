@@ -142,7 +142,7 @@ const App = () => {
       document.getElementsByTagName("html")[0].getAttribute("data-bs-theme") ===
       "dark"
         ? "#212529"
-        : "#ffffff";
+        : "#f3f0ff";
     const articleElement = document.getElementById("article-container");
     const articleScreen = await html2canvas(articleElement, {
       logging: true,

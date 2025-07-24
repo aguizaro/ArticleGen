@@ -12,6 +12,12 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+:root[data-bs-theme='light'] {
+  --bs-body-bg: #f3f0ff;
+  --bs-body-color: #212529;
+  --bs-bg-light: #f8f9fa;
+}
+
 a {
   font-weight: 500;
   color: #646cff;
@@ -29,6 +35,7 @@ a:hover {
   justify-content: space-between;
   width: 100vw;
   height: 100vh;
+
 }
 
 #app {
@@ -42,6 +49,7 @@ a:hover {
   margin: 0 auto;
   padding: 1rem;
   text-align: center;
+
 }
 
 .article {
